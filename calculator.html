@@ -83,7 +83,7 @@
 
 <script>
 (function(){
-  var RATE_LPR=50, RATE_LEAD=500, RATE_MEET=1500, RATE_DEAL=5000;
+  var RATE_LPR=50, RATE_LEAD=300, RATE_MEET=1000, RATE_DEAL=5000;
   var K_LPR=0.25, K_LEAD=0.08, K_MEET=0.3;
   function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
   function calc(){
@@ -98,8 +98,8 @@
     var meets=leads*K_MEET;
     var mLpr=lpr*RATE_LPR, mLeads=leads*RATE_LEAD, mMeets=meets*RATE_MEET, mDeals=deals*RATE_DEAL;
     document.getElementById('d-lpr').textContent='≈'+Math.round(lpr)+' в месяц × 50 ₽';
-    document.getElementById('d-leads').textContent='≈'+Math.round(leads)+' × 500 ₽';
-    document.getElementById('d-meets').textContent='≈'+Math.round(meets)+' × 1 500 ₽';
+    document.getElementById('d-leads').textContent='≈'+Math.round(leads)+' × 300 ₽';
+    document.getElementById('d-meets').textContent='≈'+Math.round(meets)+' × 1 000 ₽';
     document.getElementById('d-deals').textContent=deals+' × 5 000 ₽';
     document.getElementById('m-lpr').textContent=fmt(mLpr);
     document.getElementById('m-leads').textContent=fmt(mLeads);

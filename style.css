@@ -40,7 +40,10 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.86);backdro
 .stats div a{text-decoration:none;display:block;transition:transform .2s}
 .stats div a:hover{transform:translateY(-2px)}
 .stats div a:hover b{color:var(--blue-dark)}
-.stats div a span{color:var(--blue);font-weight:600}
+.calc-pill{display:inline-flex;align-items:center;background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;margin-top:8px;max-width:none;box-shadow:0 8px 18px -8px rgba(0,184,118,.7);animation:pillPulse 2.4s ease-out infinite;transition:background .2s}
+.stats div span.calc-pill{color:#fff;max-width:none}
+.stat-calc:hover .calc-pill{background:var(--green-dark)}
+@keyframes pillPulse{0%{box-shadow:0 8px 18px -8px rgba(0,184,118,.7),0 0 0 0 rgba(0,184,118,.35)}70%{box-shadow:0 8px 18px -8px rgba(0,184,118,.7),0 0 0 10px rgba(0,184,118,0)}100%{box-shadow:0 8px 18px -8px rgba(0,184,118,.7),0 0 0 0 rgba(0,184,118,0)}}
 
 .hero-visual{position:relative;padding:36px 12px 44px}
 .call-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 24px 60px -20px rgba(16,38,110,.28);transform:rotate(-1.5deg);position:relative}
