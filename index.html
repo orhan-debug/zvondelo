@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZvonDelo — работа на холодных звонках | Удаленная подработка для операторов</title>
+<meta name="description" content="Зарабатывайте на холодных звонках удаленно. Гибкий график, оплата за результат, готовые скрипты и база контактов. Подайте заявку за 2 минуты.">
+<meta name="keywords" content="холодные звонки работа, оператор холодных звонков, удаленная работа звонки, обзвон клиентов вакансия, менеджер по продажам удаленно">
+<style>
+  :root{
+    --blue:#1f4fd8; --blue-dark:#16389c; --ink:#101828; --gray:#475467;
+    --bg:#f7f9fc; --card:#ffffff; --accent:#00b876; --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{background:#fff;border-bottom:1px solid #e8edf5;position:sticky;top:0;z-index:10}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-size:22px;font-weight:800;color:var(--blue)}
+  .logo span{color:var(--accent)}
+  .nav a.btn-sm{background:var(--blue);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600}
+  .nav-links a:hover{color:var(--blue)}
+  @media(max-width:560px){.nav-links a:not(.btn-sm){display:none}}
+  .hero{padding:72px 0 64px;background:linear-gradient(135deg,#eef3ff 0%,#f7f9fc 60%)}
+  .hero h1{font-size:42px;line-height:1.15;max-width:640px;font-weight:800}
+  .hero h1 em{color:var(--blue);font-style:normal}
+  .hero p{font-size:19px;color:var(--gray);max-width:560px;margin:18px 0 30px}
+  .btn{display:inline-block;background:var(--blue);color:#fff;padding:15px 32px;border-radius:10px;font-size:17px;font-weight:700;text-decoration:none;transition:.2s}
+  .btn:hover{background:var(--blue-dark)}
+  .hero .note{font-size:14px;color:var(--gray);margin-top:12px}
+  .stats{display:flex;gap:48px;margin-top:44px;flex-wrap:wrap}
+  .stats div b{display:block;font-size:28px;color:var(--blue)}
+  .stats div span{font-size:14px;color:var(--gray)}
+  section{padding:64px 0}
+  h2{font-size:30px;font-weight:800;margin-bottom:12px}
+  .sub{color:var(--gray);font-size:17px;margin-bottom:36px;max-width:620px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid #e8edf5;border-radius:var(--radius);padding:26px}
+  .card .num{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:14px}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{font-size:15px;color:var(--gray)}
+  .time{display:inline-block;background:#e6f9f1;color:var(--accent);font-size:13px;font-weight:700;padding:4px 12px;border-radius:6px;margin-bottom:10px}
+  .pay{background:#fff}
+  .pay-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid #e8edf5}
+  .pay-table th{background:var(--blue);color:#fff;text-align:left;padding:14px 18px;font-size:15px}
+  .pay-table td{padding:14px 18px;border-top:1px solid #eef1f6;font-size:15px}
+  .pay-table td b{color:var(--accent);font-size:17px}
+  .projects .card h3{color:var(--blue)}
+  .req ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+  .req li{background:var(--card);border:1px solid #e8edf5;border-radius:10px;padding:14px 18px;font-size:15px}
+  .req li::before{content:"✓ ";color:var(--accent);font-weight:800}
+  .form-sec{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);color:#fff}
+  .form-sec h2,.form-sec .sub{color:#fff}
+  .form-sec .sub{opacity:.85}
+  form{background:#fff;border-radius:var(--radius);padding:32px;max-width:640px;color:var(--ink)}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid #d0d7e2;border-radius:8px;font-size:15px;font-family:inherit}
+  .field textarea{min-height:90px;resize:vertical}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  form button{width:100%;background:var(--accent);color:#fff;border:none;padding:15px;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer}
+  form button:hover{filter:brightness(1.06)}
+  .form-note{font-size:13px;color:var(--gray);margin-top:12px;text-align:center}
+  .faq details{background:var(--card);border:1px solid #e8edf5;border-radius:10px;padding:18px 22px;margin-bottom:12px}
+  .faq summary{font-weight:700;cursor:pointer;font-size:16px}
+  .faq details p{margin-top:10px;color:var(--gray);font-size:15px}
+  footer{background:var(--ink);color:#98a2b3;padding:36px 0;font-size:14px}
+  footer .logo{color:#fff;margin-bottom:8px}
+  @media(max-width:640px){.hero h1{font-size:30px}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" style="text-decoration:none"><div class="logo">Zvon<span>Delo</span></div></a>
+    <div class="nav-links">
+      <a href="#top">Главная</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn-sm" href="#apply">Подать заявку</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>Зарабатывайте на <em>холодных звонках</em> — удаленно, в удобное время</h1>
+    <p>Мы ищем фрилансеров-операторов для обзвона клиентов по проекту компании ASENTOR. Готовые скрипты, база контактов и личный кабинет со статистикой — от вас только голос и настойчивость.</p>
+    <a class="btn" href="#apply">Начать зарабатывать</a>
+    <div class="note">Заявка займет 2 минуты · Опыт приветствуется, но не обязателен</div>
+    <div class="stats">
+      <div><b>от 40 000 ₽</b><span>средний доход в месяц</span></div>
+      <div><b>100%</b><span>удаленная работа</span></div>
+      <div><b>B2B</b><span>звонки только компаниям</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Как это работает</h2>
+    <p class="sub">От заявки до первой выплаты — четыре простых шага.</p>
+    <div class="grid">
+      <div class="card"><div class="num">1</div><h3>Заявка</h3><div class="time">⏱ 2 минуты</div><p>Заполните короткую анкету — имя, телефон, опыт и удобные часы для звонков.</p></div>
+      <div class="card"><div class="num">2</div><h3>Собеседование</h3><div class="time">⏱ 15 минут</div><p>Короткий созвон: оценим подачу и дикцию, расскажем о проекте, проведем тестовый звонок.</p></div>
+      <div class="card"><div class="num">3</div><h3>Обучение</h3><div class="time">⏱ 30 минут</div><p>Выдаем скрипты, базу контактов и доступ в личный кабинет с дашбордом звонков.</p></div>
+      <div class="card"><div class="num">4</div><h3>Звонки и выплаты</h3><div class="time">💰 каждую неделю</div><p>Звоните в удобные часы. Результаты видны в дашборде, выплаты — раз в неделю.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pay">
+  <div class="wrap">
+    <h2>Сколько вы заработаете</h2>
+    <p class="sub">Платим за результат — чем лучше звоните, тем больше получаете.</p>
+    <table class="pay-table">
+      <tr><th>За что</th><th>Оплата</th></tr>
+      <tr><td>Совершенный результативный звонок (дозвон, разговор с ЛПР)</td><td><b>50 ₽</b></td></tr>
+      <tr><td>Квалифицированный лид (интерес подтвержден, контакты переданы)</td><td><b>500 ₽</b></td></tr>
+      <tr><td>Назначенная встреча / созвон с менеджером</td><td><b>1 500 ₽</b></td></tr>
+      <tr><td>Бонус: клиент заключил договор</td><td><b>5 000 ₽</b></td></tr>
+      <tr><td>Проектный бонус: процент от суммы заключенного договора</td><td><b>0,5%</b></td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="projects">
+  <div class="wrap">
+    <h2>По какому проекту звоним</h2>
+    <p class="sub">Действующее направление компании ASENTOR — логистика для бизнеса.</p>
+    <div class="grid">
+      <div class="card"><h3>ketavr-log.ru</h3><p>Логистические услуги для промышленных компаний: перевозки, таможенное оформление, складская логистика. Целевая аудитория — отделы снабжения и логистики.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="req">
+  <div class="wrap">
+    <h2>Что нужно от вас</h2>
+    <p class="sub" style="margin-bottom:24px">Никакого офиса и жесткого графика — только несколько условий.</p>
+    <ul>
+      <li>Грамотная речь и четкая дикция</li>
+      <li>Тихое место и гарнитура</li>
+      <li>Стабильный интернет</li>
+      <li>Минимум 2–3 часа в день на звонки</li>
+      <li>Самозанятость или ИП (поможем оформить)</li>
+      <li>Готовность работать по скрипту и слышать «нет»</li>
+    </ul>
+  </div>
+</section>
+
+<section class="form-sec" id="apply">
+  <div class="wrap">
+    <h2>Подать заявку</h2>
+    <p class="sub">Ответим в течение одного рабочего дня.</p>
+    <form onsubmit="event.preventDefault();alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в течение рабочего дня.');this.reset();">
+      <div class="two">
+        <div class="field"><label>Имя *</label><input required placeholder="Иван"></div>
+        <div class="field"><label>Телефон *</label><input required type="tel" placeholder="+7 900 000-00-00"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Email</label><input type="email" placeholder="ivan@mail.ru"></div>
+        <div class="field"><label>Город / часовой пояс</label><input placeholder="Москва, GMT+3"></div>
+      </div>
+      <div class="field"><label>Опыт в продажах или звонках</label>
+        <select><option>Нет опыта — готов(а) учиться</option><option>До 1 года</option><option>1–3 года</option><option>Более 3 лет</option></select>
+      </div>
+      <div class="field"><label>Сколько часов в день готовы звонить?</label>
+        <select><option>2–3 часа</option><option>4–5 часов</option><option>Полный день</option></select>
+      </div>
+      <div class="field"><label>Комментарий</label><textarea placeholder="Пара слов о себе и своем опыте"></textarea></div>
+      <button type="submit">Отправить заявку</button>
+      <div class="form-note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</div>
+    </form>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Частые вопросы</h2>
+    <details><summary>Нужен ли опыт холодных звонков?</summary><p>Нет. Мы даем готовые скрипты и проводим обучение. Главное — грамотная речь и готовность работать с отказами.</p></details>
+    <details><summary>Как я буду видеть свои результаты?</summary><p>У каждого оператора есть доступ в личный кабинет: количество звонков, дозвонов, лидов и назначенных встреч обновляются в дашборде в реальном времени.</p></details>
+    <details><summary>Когда выплаты?</summary><p>Раз в неделю, по итогам подтвержденных результатов в дашборде. Работаем официально через самозанятость.</p></details>
+    <details><summary>Кому я буду звонить?</summary><p>По базе промышленных и торговых компаний, которую мы предоставляем. Никаких «холодных» частных лиц — только B2B.</p></details>
+    <details><summary>Могу ли я совмещать с другой работой?</summary><p>Да, график полностью гибкий. Минимальная нагрузка — 2–3 часа в день в будни.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">Zvon<span style="color:var(--accent)">Delo</span></div>
+    <div>Проект компании ASENTOR · ketavr-log.ru</div>
+    <div>© 2026 ZvonDelo. Все права защищены.</div>
+  </div>
+</footer>
+
+</body>
+</html>
