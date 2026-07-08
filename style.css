@@ -138,6 +138,10 @@ form button:hover{background:var(--green-dark);transform:translateY(-1px)}
 .form-msg-ok{background:#e6f9f1;color:var(--green-dark)}
 .form-msg-err{background:#fdecec;color:#c0392b}
 
+.stat-label{display:block;font-size:13px;color:var(--gray);font-weight:500;max-width:170px}
+.life-banner{background:#e6f9f1;border:1px solid #b6ebd6;border-radius:14px;padding:16px 22px;margin-bottom:26px;font-size:15px;color:var(--ink);max-width:820px}
+.life-banner b{color:var(--green-dark)}
+
 .calc{padding:72px 0 64px}
 .calc-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch}
 .calc-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px}

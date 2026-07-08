@@ -29,24 +29,30 @@
   <div class="wrap">
     <h2>Сколько вы можете заработать</h2>
     <p class="sub">Подвигайте ползунки — расчет обновляется мгновенно по нашим реальным тарифам.</p>
+    <div class="life-banner"><b>0,5% с каждого договора — пожизненно.</b> Привели клиента один раз — получаете процент со всех его будущих заказов, пока он работает с нами. Ваш доход растет каждый месяц даже без новых звонков.</div>
     <div class="calc-grid">
       <div class="calc-card">
         <div class="slider-field">
-          <label>Звонков в день <b id="v-calls">80</b></label>
-          <input type="range" id="calls" min="30" max="120" step="5" value="80">
+          <label>Звонков в день <b id="v-calls">100</b></label>
+          <input type="range" id="calls" min="30" max="120" step="5" value="100">
           <div class="slider-hint">Опытный оператор делает 60–80 звонков за 3–4 часа, 100+ за полный день</div>
         </div>
         <div class="slider-field">
-          <label>Дней в месяц <b id="v-days">22</b></label>
-          <input type="range" id="days" min="10" max="26" step="1" value="22">
+          <label>Дней в месяц <b id="v-days">24</b></label>
+          <input type="range" id="days" min="10" max="26" step="1" value="24">
           <div class="slider-hint">Гибкий график — звоните когда удобно</div>
         </div>
         <div class="slider-field">
-          <label>Заключенных договоров в месяц <b id="v-deals">1</b></label>
-          <input type="range" id="deals" min="0" max="3" step="1" value="1">
-          <div class="slider-hint">Бонус 5 000 ₽ за каждый договор + 0,5% от его суммы сверху</div>
+          <label>Заключенных договоров в месяц <b id="v-deals">2</b></label>
+          <input type="range" id="deals" min="0" max="3" step="1" value="2">
+          <div class="slider-hint">Бонус 5 000 ₽ за каждый договор + 0,5% пожизненно</div>
         </div>
-        <div class="calc-note">Расчет ориентировочный, при средних конверсиях: до ЛПР доходит ~25% звонков, ~8% разговоров дают лид, ~30% лидов — встречу. Оплата — строго по <a href="index.html#pay">таблице тарифов</a>.</div>
+        <div class="slider-field">
+          <label>Оборот ваших клиентов в месяц <b id="v-turn">2 млн ₽</b></label>
+          <input type="range" id="turn" min="0" max="10" step="0.5" value="2">
+          <div class="slider-hint">0,5% пожизненно со всех заказов клиентов, которых вы привели — портфель растет с каждым договором</div>
+        </div>
+        <div class="calc-note">Расчет ориентировочный, при средних конверсиях: до ЛПР доходит ~25% звонков, ~10% разговоров дают лид, ~30% лидов — встречу. Оплата — строго по <a href="index.html#pay">таблице тарифов</a>.</div>
       </div>
       <div class="result-card">
         <div class="calc-total"><span>Ваш доход в месяц</span><b id="total">—</b></div>
@@ -55,8 +61,9 @@
           <div class="calc-row"><span>Квалифицированные лиды <i id="d-leads"></i></span><b id="m-leads"></b></div>
           <div class="calc-row"><span>Назначенные встречи <i id="d-meets"></i></span><b id="m-meets"></b></div>
           <div class="calc-row"><span>Бонусы за договоры <i id="d-deals"></i></span><b id="m-deals"></b></div>
+          <div class="calc-row"><span>Пожизненные 0,5% с оборота клиентов <i id="d-turn"></i></span><b id="m-turn"></b></div>
         </div>
-        <div class="calc-extra">+ 0,5% от суммы каждого заключенного договора</div>
+        <div class="calc-extra">Оборот ваших клиентов растет — пожизненный процент растет вместе с ним, без единого нового звонка.</div>
         <a class="btn btn-green" href="apply.html">Начать зарабатывать</a>
       </div>
     </div>
@@ -84,30 +91,35 @@
 <script>
 (function(){
   var RATE_LPR=50, RATE_LEAD=300, RATE_MEET=1000, RATE_DEAL=5000;
-  var K_LPR=0.25, K_LEAD=0.08, K_MEET=0.3;
+  var K_LPR=0.25, K_LEAD=0.10, K_MEET=0.3;
   function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
   function calc(){
     var calls=+document.getElementById('calls').value;
     var days=+document.getElementById('days').value;
     var deals=+document.getElementById('deals').value;
+    var turn=+document.getElementById('turn').value;
     document.getElementById('v-calls').textContent=calls;
     document.getElementById('v-days').textContent=days;
     document.getElementById('v-deals').textContent=deals;
+    document.getElementById('v-turn').textContent=String(turn).replace('.',',')+' млн ₽';
     var lpr=calls*days*K_LPR;
     var leads=lpr*K_LEAD;
     var meets=leads*K_MEET;
     var mLpr=lpr*RATE_LPR, mLeads=leads*RATE_LEAD, mMeets=meets*RATE_MEET, mDeals=deals*RATE_DEAL;
+    var mTurn=turn*1000000*0.005;
     document.getElementById('d-lpr').textContent='≈'+Math.round(lpr)+' в месяц × 50 ₽';
     document.getElementById('d-leads').textContent='≈'+Math.round(leads)+' × 300 ₽';
     document.getElementById('d-meets').textContent='≈'+Math.round(meets)+' × 1 000 ₽';
     document.getElementById('d-deals').textContent=deals+' × 5 000 ₽';
+    document.getElementById('d-turn').textContent='0,5% × '+String(turn).replace('.',',')+' млн ₽';
     document.getElementById('m-lpr').textContent=fmt(mLpr);
     document.getElementById('m-leads').textContent=fmt(mLeads);
     document.getElementById('m-meets').textContent=fmt(mMeets);
     document.getElementById('m-deals').textContent=fmt(mDeals);
-    document.getElementById('total').textContent='≈ '+fmt(mLpr+mLeads+mMeets+mDeals);
+    document.getElementById('m-turn').textContent=fmt(mTurn);
+    document.getElementById('total').textContent='≈ '+fmt(mLpr+mLeads+mMeets+mDeals+mTurn);
   }
-  ['calls','days','deals'].forEach(function(id){
+  ['calls','days','deals','turn'].forEach(function(id){
     document.getElementById(id).addEventListener('input',calc);
   });
   calc();
