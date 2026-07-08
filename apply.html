@@ -30,27 +30,64 @@
   <div class="wrap">
     <h2>Подать заявку</h2>
     <p class="sub">Ответим в течение одного рабочего дня.</p>
-    <form onsubmit="event.preventDefault();alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в течение рабочего дня.');this.reset();">
+    <form id="apply-form">
       <div class="two">
-        <div class="field"><label>Имя *</label><input required placeholder="Иван"></div>
-        <div class="field"><label>Телефон *</label><input required type="tel" placeholder="+7 900 000-00-00"></div>
+        <div class="field"><label>Имя *</label><input name="name" required placeholder="Иван"></div>
+        <div class="field"><label>Телефон *</label><input name="phone" required type="tel" placeholder="+7 900 000-00-00"></div>
       </div>
       <div class="two">
-        <div class="field"><label>Email</label><input type="email" placeholder="ivan@mail.ru"></div>
-        <div class="field"><label>Город / часовой пояс</label><input placeholder="Москва, GMT+3"></div>
+        <div class="field"><label>Email</label><input name="email" type="email" placeholder="ivan@mail.ru"></div>
+        <div class="field"><label>Город / часовой пояс</label><input name="city" placeholder="Москва, GMT+3"></div>
       </div>
       <div class="field"><label>Опыт в продажах или звонках</label>
-        <select><option>Нет опыта — готов(а) учиться</option><option>До 1 года</option><option>1–3 года</option><option>Более 3 лет</option></select>
+        <select name="experience"><option>Нет опыта — готов(а) учиться</option><option>До 1 года</option><option>1–3 года</option><option>Более 3 лет</option></select>
       </div>
       <div class="field"><label>Сколько часов в день готовы звонить?</label>
-        <select><option>2–3 часа</option><option>4–5 часов</option><option>Полный день</option></select>
+        <select name="hours"><option>2–3 часа</option><option>4–5 часов</option><option>Полный день</option></select>
       </div>
-      <div class="field"><label>Комментарий</label><textarea placeholder="Пара слов о себе и своем опыте"></textarea></div>
+      <div class="field"><label>Комментарий</label><textarea name="comment" placeholder="Пара слов о себе и своем опыте"></textarea></div>
       <button type="submit">Отправить заявку</button>
       <div class="form-note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</div>
+      <div class="form-msg form-msg-ok" hidden>Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в течение рабочего дня.</div>
+      <div class="form-msg form-msg-err" hidden>Не удалось отправить заявку. Проверьте интернет и попробуйте еще раз.</div>
     </form>
   </div>
 </section>
+
+<script>
+(function(){
+  var SB_URL='https://ovjdxocmwrbjxkfrbwin.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92amR4b2Ntd3JianhrZnJid2luIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwOTY3NjEsImV4cCI6MjA5ODY3Mjc2MX0.4yHaaY3BzSdKSomHhPeoMCQ7HzO7hz7ssjTV-bt1ZaI';
+  var form=document.getElementById('apply-form');
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var btn=form.querySelector('button');
+    var ok=form.querySelector('.form-msg-ok');
+    var err=form.querySelector('.form-msg-err');
+    ok.hidden=true;err.hidden=true;
+    btn.disabled=true;btn.textContent='Отправляем…';
+    var fd=new FormData(form);
+    var body={
+      name:fd.get('name'),phone:fd.get('phone'),
+      email:fd.get('email')||null,city:fd.get('city')||null,
+      experience:fd.get('experience'),hours:fd.get('hours'),
+      comment:fd.get('comment')||null
+    };
+    fetch(SB_URL+'/rest/v1/zvondelo_applications',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(body)
+    }).then(function(r){
+      if(!r.ok){throw new Error('HTTP '+r.status)}
+      form.reset();ok.hidden=false;
+      btn.textContent='Заявка отправлена ✓';
+    }).catch(function(){
+      err.hidden=false;
+      btn.disabled=false;btn.textContent='Отправить заявку';
+    });
+  });
+})();
+</script>
 
 <footer>
   <div class="wrap">

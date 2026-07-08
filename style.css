@@ -10,14 +10,14 @@ h1,h2,h3,.logo{font-family:'Unbounded','Golos Text',sans-serif}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 
 header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-size:20px;font-weight:700;color:var(--blue);letter-spacing:-.02em}
+.nav{display:flex;align-items:center;justify-content:space-between;height:80px}
+.logo{font-size:24px;font-weight:700;color:var(--blue);letter-spacing:-.02em}
 .logo span{color:var(--green)}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;transition:color .2s}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{color:var(--ink);text-decoration:none;font-size:17px;font-weight:600;transition:color .2s}
 .nav-links a:hover{color:var(--blue)}
 .nav-links a.active{color:var(--blue)}
-.nav a.btn-sm{background:var(--blue);color:#fff;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;transition:background .2s,transform .2s}
+.nav a.btn-sm{background:var(--blue);color:#fff;padding:13px 26px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;transition:background .2s,transform .2s}
 .nav a.btn-sm:hover{background:var(--blue-dark);transform:translateY(-1px);color:#fff}
 @media(max-width:560px){.nav-links a:not(.btn-sm){display:none}}
 
@@ -127,6 +127,9 @@ form{background:#fff;border-radius:20px;padding:36px;max-width:640px;color:var(-
 form button{width:100%;background:var(--green);color:#fff;border:none;padding:16px;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;transition:background .2s,transform .2s}
 form button:hover{background:var(--green-dark);transform:translateY(-1px)}
 .form-note{font-size:13px;color:var(--gray);margin-top:14px;text-align:center}
+.form-msg{margin-top:16px;padding:14px 18px;border-radius:10px;font-size:15px;font-weight:600;text-align:center}
+.form-msg-ok{background:#e6f9f1;color:var(--green-dark)}
+.form-msg-err{background:#fdecec;color:#c0392b}
 
 .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 24px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
 .faq details[open]{border-color:#c9d7fb;box-shadow:var(--shadow)}
