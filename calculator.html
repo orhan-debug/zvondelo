@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор дохода — ZvonDelo | Сколько можно заработать на звонках</title>
+<meta name="description" content="Посчитайте свой потенциальный доход оператора холодных звонков: звонки, лиды, встречи и бонусы — по реальным тарифам ZvonDelo.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" style="text-decoration:none"><div class="logo">Zvon<span>Delo</span></div></a>
+    <div class="nav-links">
+      <a href="index.html">Главная</a>
+      <a href="calculator.html" class="active">Калькулятор дохода</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn-sm" href="apply.html">Подать заявку</a>
+    </div>
+  </div>
+</header>
+
+<section class="calc">
+  <div class="wrap">
+    <h2>Сколько вы можете заработать</h2>
+    <p class="sub">Подвигайте ползунки — расчет обновляется мгновенно по нашим реальным тарифам.</p>
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="slider-field">
+          <label>Звонков в день <b id="v-calls">70</b></label>
+          <input type="range" id="calls" min="30" max="100" step="5" value="70">
+          <div class="slider-hint">Опытный оператор делает 60–80 звонков за 3–4 часа</div>
+        </div>
+        <div class="slider-field">
+          <label>Дней в месяц <b id="v-days">22</b></label>
+          <input type="range" id="days" min="10" max="26" step="1" value="22">
+          <div class="slider-hint">Гибкий график — звоните когда удобно</div>
+        </div>
+        <div class="slider-field">
+          <label>Заключенных договоров в месяц <b id="v-deals">1</b></label>
+          <input type="range" id="deals" min="0" max="3" step="1" value="1">
+          <div class="slider-hint">Бонус 5 000 ₽ за каждый договор + 0,5% от его суммы сверху</div>
+        </div>
+        <div class="calc-note">Расчет ориентировочный, при средних конверсиях: до ЛПР доходит ~25% звонков, ~8% разговоров дают лид, ~30% лидов — встречу. Оплата — строго по <a href="index.html#pay">таблице тарифов</a>.</div>
+      </div>
+      <div class="result-card">
+        <div class="calc-total"><span>Ваш доход в месяц</span><b id="total">—</b></div>
+        <div class="calc-rows">
+          <div class="calc-row"><span>Разговоры с ЛПР <i id="d-lpr"></i></span><b id="m-lpr"></b></div>
+          <div class="calc-row"><span>Квалифицированные лиды <i id="d-leads"></i></span><b id="m-leads"></b></div>
+          <div class="calc-row"><span>Назначенные встречи <i id="d-meets"></i></span><b id="m-meets"></b></div>
+          <div class="calc-row"><span>Бонусы за договоры <i id="d-deals"></i></span><b id="m-deals"></b></div>
+        </div>
+        <div class="calc-extra">+ 0,5% от суммы каждого заключенного договора</div>
+        <a class="btn btn-green" href="apply.html">Начать зарабатывать</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="wrap">
+    <div class="cta-panel reveal">
+      <h2>Цифры нравятся?</h2>
+      <p>Заявка занимает 2 минуты. Ответим в течение одного рабочего дня.</p>
+      <a class="btn btn-green" href="apply.html">Подать заявку</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">Zvon<span style="color:var(--green)">Delo</span></div>
+    <div>Проект компании КЕНТАВР ЛОГИСТИКА · kentavr-log.ru</div>
+    <div>© 2026 ZvonDelo. Все права защищены.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var RATE_LPR=50, RATE_LEAD=500, RATE_MEET=1500, RATE_DEAL=5000;
+  var K_LPR=0.25, K_LEAD=0.08, K_MEET=0.3;
+  function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'}
+  function calc(){
+    var calls=+document.getElementById('calls').value;
+    var days=+document.getElementById('days').value;
+    var deals=+document.getElementById('deals').value;
+    document.getElementById('v-calls').textContent=calls;
+    document.getElementById('v-days').textContent=days;
+    document.getElementById('v-deals').textContent=deals;
+    var lpr=calls*days*K_LPR;
+    var leads=lpr*K_LEAD;
+    var meets=leads*K_MEET;
+    var mLpr=lpr*RATE_LPR, mLeads=leads*RATE_LEAD, mMeets=meets*RATE_MEET, mDeals=deals*RATE_DEAL;
+    document.getElementById('d-lpr').textContent='≈'+Math.round(lpr)+' в месяц × 50 ₽';
+    document.getElementById('d-leads').textContent='≈'+Math.round(leads)+' × 500 ₽';
+    document.getElementById('d-meets').textContent='≈'+Math.round(meets)+' × 1 500 ₽';
+    document.getElementById('d-deals').textContent=deals+' × 5 000 ₽';
+    document.getElementById('m-lpr').textContent=fmt(mLpr);
+    document.getElementById('m-leads').textContent=fmt(mLeads);
+    document.getElementById('m-meets').textContent=fmt(mMeets);
+    document.getElementById('m-deals').textContent=fmt(mDeals);
+    document.getElementById('total').textContent='≈ '+fmt(mLpr+mLeads+mMeets+mDeals);
+  }
+  ['calls','days','deals'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
+</script>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  els.forEach(function(el){io.observe(el)});
+})();
+</script>
+
+</body>
+</html>
