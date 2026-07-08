@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAQ — ZvonDelo | Частые вопросы операторов</title>
 <meta name="description" content="Ответы на частые вопросы о работе оператором холодных звонков в ZvonDelo: опыт, выплаты, график, кому звонить.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,30 +30,43 @@
   <div class="wrap">
     <h2>Частые вопросы</h2>
     <p class="sub">Все, что обычно спрашивают перед началом работы.</p>
-    <details><summary>Нужен ли опыт холодных звонков?</summary><p>Нет. Мы даем готовые скрипты и проводим обучение. Главное — грамотная речь и готовность работать с отказами.</p></details>
-    <details><summary>Как я буду видеть свои результаты?</summary><p>У каждого оператора есть доступ в личный кабинет: количество звонков, дозвонов, лидов и назначенных встреч обновляются в дашборде в реальном времени.</p></details>
-    <details><summary>Когда выплаты?</summary><p>Раз в неделю, по итогам подтвержденных результатов в дашборде. Работаем официально через самозанятость.</p></details>
-    <details><summary>Кому я буду звонить?</summary><p>По базе промышленных и торговых компаний, которую мы предоставляем. Никаких «холодных» частных лиц — только B2B.</p></details>
-    <details><summary>Могу ли я совмещать с другой работой?</summary><p>Да, график полностью гибкий. Минимальная нагрузка — 2–3 часа в день в будни.</p></details>
-    <details><summary>Что нужно для старта?</summary><p>Тихое место, гарнитура, стабильный интернет и 2–3 свободных часа в день. Статус самозанятого поможем оформить — это бесплатно и занимает 10 минут.</p></details>
+    <details class="reveal"><summary>Нужен ли опыт холодных звонков?</summary><p>Нет. Мы даем готовые скрипты и проводим обучение. Главное — грамотная речь и готовность работать с отказами.</p></details>
+    <details class="reveal"><summary>Как я буду видеть свои результаты?</summary><p>У каждого оператора есть доступ в личный кабинет: количество звонков, дозвонов, лидов и назначенных встреч обновляются в дашборде в реальном времени.</p></details>
+    <details class="reveal"><summary>Когда выплаты?</summary><p>Раз в неделю, по итогам подтвержденных результатов в дашборде. Работаем официально через самозанятость.</p></details>
+    <details class="reveal"><summary>Кому я буду звонить?</summary><p>По базе промышленных и торговых компаний, которую мы предоставляем. Никаких «холодных» частных лиц — только B2B.</p></details>
+    <details class="reveal"><summary>Могу ли я совмещать с другой работой?</summary><p>Да, график полностью гибкий. Минимальная нагрузка — 2–3 часа в день в будни.</p></details>
+    <details class="reveal"><summary>Что нужно для старта?</summary><p>Тихое место, гарнитура, стабильный интернет и 2–3 свободных часа в день. Статус самозанятого поможем оформить — это бесплатно и занимает 10 минут.</p></details>
   </div>
 </section>
 
 <section class="cta-strip">
   <div class="wrap">
-    <h2>Не нашли ответ?</h2>
-    <p>Подайте заявку — обсудим все вопросы на коротком созвоне.</p>
-    <a class="btn" href="apply.html">Подать заявку</a>
+    <div class="cta-panel reveal">
+      <h2>Не нашли ответ?</h2>
+      <p>Подайте заявку — обсудим все вопросы на коротком созвоне.</p>
+      <a class="btn btn-green" href="apply.html">Подать заявку</a>
+    </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="logo">Zvon<span style="color:var(--accent)">Delo</span></div>
+    <div class="logo">Zvon<span style="color:var(--green)">Delo</span></div>
     <div>Проект компании КЕНТАВР ЛОГИСТИКА · kentavr-log.ru</div>
     <div>© 2026 ZvonDelo. Все права защищены.</div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  els.forEach(function(el){io.observe(el)});
+})();
+</script>
 
 </body>
 </html>
