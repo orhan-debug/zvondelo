@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ASENTOR — Голосовое интервью</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1f4fd8; --blue-dark:#1740b4; --navy:#0b1533; --ink:#101828;
+  --gray:#525f77; --bg:#f6f8fe; --card:#ffffff; --green:#00b876; --green-dark:#00915d;
+  --red:#e5484d; --line:#e4eaf7; --radius:16px;
+  --shadow:0 14px 34px -14px rgba(16,38,110,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+h1,h2{font-family:'Unbounded',sans-serif}
+.wrap{width:100%;max-width:640px}
+.logo{font-family:'Unbounded',sans-serif;font-weight:700;font-size:20px;color:var(--navy);text-align:center;margin-bottom:24px}
+.logo span{color:var(--blue)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 28px;margin-bottom:20px}
+.card h1{font-size:22px;margin-bottom:14px;color:var(--navy)}
+.card p{color:var(--gray);font-size:15px;line-height:1.55;margin-bottom:12px}
+.steps{margin:16px 0 20px;padding-left:0;list-style:none}
+.steps li{display:flex;gap:12px;margin-bottom:12px;font-size:15px;color:var(--ink)}
+.steps .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+input[type=text]{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;font-size:16px;font-family:inherit;margin-bottom:16px;background:#fbfcff}
+input[type=text]:focus{outline:none;border-color:var(--blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 20px;border:none;border-radius:12px;font-family:'Golos Text',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:.15s}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-dark)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:var(--green-dark)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hidden{display:none!important}
+.progress{display:flex;gap:8px;margin-bottom:24px;justify-content:center}
+.progress .dot{width:38px;height:6px;border-radius:3px;background:var(--line);transition:.3s}
+.progress .dot.active{background:var(--blue)}
+.progress .dot.done{background:var(--green)}
+.qnum{text-align:center;font-size:14px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+.stage{display:flex;flex-direction:column;align-items:center;padding:14px 0 8px}
+.orb{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;margin-bottom:18px;position:relative}
+.orb.speaking{background:radial-gradient(circle at 35% 30%,#3f6ceb,var(--blue-dark))}
+.orb.speaking::after,.orb.rec::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:3px solid currentColor;opacity:.35;animation:pulse 1.4s ease-out infinite}
+.orb.speaking{color:var(--blue)}
+.orb.rec{background:radial-gradient(circle at 35% 30%,#ff6b6f,#c2262b);color:var(--red)}
+@keyframes pulse{0%{transform:scale(.9);opacity:.5}100%{transform:scale(1.25);opacity:0}}
+.stage .state{font-size:17px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.stage .hint{font-size:14px;color:var(--gray);margin-bottom:18px;text-align:center}
+.timer{font-family:'Unbounded',sans-serif;font-size:26px;color:var(--red);margin-bottom:18px;font-variant-numeric:tabular-nums}
+.upl{font-size:15px;color:var(--gray);margin-top:8px}
+.done-icon{font-size:56px;text-align:center;margin-bottom:14px}
+.err{background:#fff3f3;border:1px solid #ffd3d4;color:#b42324;padding:12px 14px;border-radius:10px;font-size:14px;margin-top:14px}
+footer{margin-top:auto;padding-top:26px;font-size:13px;color:var(--gray);text-align:center}
+/* admin */
+.admin-q{border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;background:#fbfcff}
+.admin-q .qt{font-size:14px;line-height:1.5;margin-bottom:12px;color:var(--ink)}
+.admin-q .row{display:flex;gap:8px;flex-wrap:wrap}
+.admin-q button,.admin-q a{flex:1;min-width:110px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;color:var(--ink)}
+.admin-q button.recing{background:var(--red);color:#fff;border-color:var(--red)}
+.admin-q a.dl{background:var(--green);color:#fff;border-color:var(--green)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:6px;margin-bottom:8px}
+.tag.core{background:#e8efff;color:var(--blue-dark)}
+.tag.trap{background:#fff2e2;color:#b25e00}
+@media(max-width:480px){.card{padding:24px 18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">ASENTOR <span>· интервью</span></div>
+
+  <!-- ============ CANDIDATE: START ============ -->
+  <div class="card" id="scr-start">
+    <h1>Голосовое интервью — 2-й этап</h1>
+    <p>Это симуляция холодного звонка. Вы услышите голосовые вопросы — так, как их мог бы задать потенциальный клиент по телефону. Отвечайте вслух, как в реальном разговоре.</p>
+    <ul class="steps">
+      <li><span class="n">1</span>Прозвучит вопрос — просто слушайте.</li>
+      <li><span class="n">2</span>Когда вопрос закончится, запись вашего ответа начнётся автоматически.</li>
+      <li><span class="n">3</span>Закончили отвечать — нажмите «Завершить ответ». Сразу прозвучит следующий вопрос.</li>
+      <li><span class="n">4</span>Всего 5 вопросов. В конце ответы отправятся автоматически.</li>
+    </ul>
+    <p>Перед началом изучите материалы, которые мы вам отправили. Вопросы можно прослушать только один раз — как в настоящем звонке.</p>
+    <p><b>Важно:</b> единственного правильного ответа нет — хороших вариантов несколько. Отвечайте своими словами, как ответили бы клиенту в реальном разговоре.</p>
+    <label for="cand-name">Ваше имя и фамилия</label>
+    <input type="text" id="cand-name" placeholder="Например: Иван Петров" autocomplete="name">
+    <button class="btn btn-blue" id="btn-start">🎙 Разрешить микрофон и начать</button>
+    <div class="err hidden" id="start-err"></div>
+  </div>
+
+  <!-- ============ CANDIDATE: MIC CHECK ============ -->
+  <div class="card hidden" id="scr-mic">
+    <h1>Проверка микрофона</h1>
+    <p>Нажмите «Записать пробу», скажите вслух: <b>«Раз, два, три — проверка связи»</b>, остановите запись и прослушайте себя. Если слышно чётко — начинайте интервью.</p>
+    <div class="stage">
+      <div class="orb speaking" id="mic-orb">🎙</div>
+      <button class="btn btn-blue" id="btn-mic-rec">🔴 Записать пробу</button>
+      <audio id="mic-play" controls class="hidden" style="width:100%;margin:16px 0 6px"></audio>
+      <button class="btn btn-green hidden" id="btn-mic-ok" style="margin-top:10px">✅ Слышу себя чётко — начать интервью</button>
+    </div>
+    <div class="err hidden" id="mic-err"></div>
+  </div>
+
+  <!-- ============ CANDIDATE: INTERVIEW ============ -->
+  <div class="card hidden" id="scr-quiz">
+    <div class="progress" id="prog"></div>
+    <div class="qnum" id="qnum">Вопрос 1 из 5</div>
+    <div class="stage">
+      <div class="orb speaking" id="orb">📞</div>
+      <div class="state" id="state">Клиент задаёт вопрос…</div>
+      <div class="hint" id="hint">Слушайте внимательно</div>
+      <div class="timer hidden" id="timer">00:00</div>
+      <button class="btn btn-green hidden" id="btn-finish">⏸ Завершить ответ</button>
+    </div>
+    <div class="err hidden" id="quiz-err"></div>
+  </div>
+
+  <!-- ============ CANDIDATE: UPLOAD / DONE ============ -->
+  <div class="card hidden" id="scr-upload">
+    <div class="stage">
+      <div class="orb speaking">📤</div>
+      <div class="state">Отправляем ваши ответы…</div>
+      <div class="upl" id="upl-status">Подготовка…</div>
+    </div>
+    <div class="err hidden" id="upl-err"></div>
+  </div>
+  <div class="card hidden" id="scr-done">
+    <div class="done-icon">✅</div>
+    <h1 style="text-align:center">Интервью завершено!</h1>
+    <p style="text-align:center">Спасибо! Ваши ответы отправлены. Мы прослушаем их и свяжемся с вами в ближайшее время.</p>
+  </div>
+
+  <!-- ============ ADMIN (append ?admin to URL) ============ -->
+  <div class="card hidden" id="scr-admin">
+    <h1>Запись вопросов (админ)</h1>
+    <p>Запишите каждый вопрос своим голосом, прослушайте и скачайте. Файлы <b>q1…q5</b> положите в папку <b>interview-audio/</b> рядом с этой страницей. Пока файла нет — страница озвучит вопрос синтезом речи.</p>
+    <div id="admin-list"></div>
+  </div>
+
+  <footer>ASENTOR LLC · ООО Кентавр-Логистика</footer>
+</div>
+
+<script>
+/* ================= QUESTIONS =================
+   Роли: клиент (лид) на холодном звонке задаёт вопрос оператору.
+   core = ответ есть в материалах; trap = проверка поведения. */
+const QUESTIONS = [
+  { id:1, kind:'core',
+    text:'Здравствуйте. Ну допустим… У нас европейский поставщик в прошлом году полностью прекратил отгрузки в Россию, закупки встали. И чем конкретно вы можете нам помочь? Как это вообще у вас работает?' },
+  { id:2, kind:'core',
+    text:'Да мы и так всё получаем, просто через посредников — и дорого. С чего вы взяли, что через вас выйдет дешевле?' },
+  { id:3, kind:'core',
+    text:'Хорошо. А как оформляется сделка и оплата? Честно говоря, боимся, что платёж просто заблокируют — или деньги уйдут, а товар так и не приедет.' },
+  { id:4, kind:'trap-irrelevant',
+    text:'Слушайте, а у меня вообще другой вопрос. Вы случайно перевозками по России не занимаетесь? Мне станок нужно из Москвы в Екатеринбург перевезти на следующей неделе.' },
+  { id:5, kind:'trap-noinfo',
+    text:'Ладно, давайте конкретно: сколько будет стоить доставка одной паллеты из Германии до Москвы и за какой срок? Назовите мне цифру прямо сейчас, иначе не о чем разговаривать.' }
+];
+
+const SUPABASE_URL  = 'https://ovjdxocmwrbjxkfrbwin.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92amR4b2Ntd3JianhrZnJid2luIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwOTY3NjEsImV4cCI6MjA5ODY3Mjc2MX0.4yHaaY3BzSdKSomHhPeoMCQ7HzO7hz7ssjTV-bt1ZaI';
+const BUCKET        = 'asentor-interviews';
+const AUDIO_DIR     = 'interview-audio';       // q1.webm / q1.mp3 / q1.m4a
+const AUDIO_EXTS    = ['m4a','webm','mp3'];
+
+const $ = id => document.getElementById(id);
+let stream=null, recorder=null, chunks=[], idx=0, timerInt=null, recStart=0;
+const answers = [];   // {blob, mime, seconds}
+let candName='';
+
+/* ---------- helpers ---------- */
+function show(id){['scr-start','scr-mic','scr-quiz','scr-upload','scr-done','scr-admin'].forEach(s=>$(s).classList.add('hidden'));$(id).classList.remove('hidden');}
+function pickMime(){
+  for(const m of ['audio/mp4;codecs=mp4a.40.2','audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'])
+    if(window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m;
+  return '';
+}
+function extFor(mime){ return mime.includes('mp4')?'m4a':mime.includes('ogg')?'ogg':'webm'; }
+function fmt(s){const m=String(Math.floor(s/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');return m+':'+ss;}
+function translit(s){const map={а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya'};
+  return s.toLowerCase().split('').map(c=>map[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'candidate';}
+
+/* ---------- question playback (recorded voice, TTS fallback) ---------- */
+function playQuestion(i, onEnd){
+  const q = QUESTIONS[i];
+  let e = 0;
+  const tryNext = () => {
+    if (e >= AUDIO_EXTS.length) { speakTTS(q.text, onEnd); return; }
+    const a = new Audio(`${AUDIO_DIR}/q${q.id}.${AUDIO_EXTS[e++]}`);
+    a.onended = onEnd;
+    a.onerror = tryNext;
+    a.play().catch(tryNext);
+  };
+  tryNext();
+}
+function speakTTS(text, onEnd){
+  if(!('speechSynthesis' in window)){ onEnd(); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='ru-RU'; u.rate=1;
+  const v = speechSynthesis.getVoices().find(v=>v.lang && v.lang.startsWith('ru'));
+  if(v) u.voice=v;
+  u.onend=onEnd; u.onerror=onEnd;
+  speechSynthesis.speak(u);
+}
+if('speechSynthesis' in window) speechSynthesis.getVoices(); // warm up
+
+/* ---------- candidate flow ---------- */
+$('btn-start').onclick = async () => {
+  candName = $('cand-name').value.trim();
+  if(!candName){ $('start-err').textContent='Пожалуйста, укажите имя и фамилию.'; $('start-err').classList.remove('hidden'); return; }
+  if(!navigator.mediaDevices || !window.MediaRecorder){
+    $('start-err').textContent='Ваш браузер не поддерживает запись звука. Откройте страницу в Chrome или Safari.';
+    $('start-err').classList.remove('hidden'); return;
+  }
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(err){
+    $('start-err').textContent='Нет доступа к микрофону. Разрешите доступ в настройках браузера и обновите страницу.';
+    $('start-err').classList.remove('hidden'); return;
+  }
+  show('scr-mic');
+};
+
+/* ---------- mic check ---------- */
+let micRec=null, micUrl=null;
+$('btn-mic-rec').onclick = () => {
+  if(micRec && micRec.state==='recording'){ micRec.stop(); return; }
+  const mime = pickMime(); const ch=[];
+  try{
+    micRec = mime ? new MediaRecorder(stream,{mimeType:mime}) : new MediaRecorder(stream);
+  }catch(err){
+    $('mic-err').textContent='Не удалось начать запись: '+err.message;
+    $('mic-err').classList.remove('hidden'); return;
+  }
+  micRec.ondataavailable = e => { if(e.data.size) ch.push(e.data); };
+  micRec.onstop = () => {
+    if(micUrl) URL.revokeObjectURL(micUrl);
+    micUrl = URL.createObjectURL(new Blob(ch,{type:micRec.mimeType||'audio/webm'}));
+    $('mic-play').src = micUrl;
+    $('mic-play').classList.remove('hidden');
+    $('btn-mic-ok').classList.remove('hidden');
+    $('btn-mic-rec').textContent='🔁 Перезаписать пробу';
+    $('mic-orb').className='orb speaking'; $('mic-orb').textContent='🎧';
+  };
+  micRec.start();
+  $('mic-orb').className='orb rec'; $('mic-orb').textContent='🎙';
+  $('btn-mic-rec').textContent='⏹ Остановить запись';
+  $('mic-play').classList.add('hidden');
+  $('btn-mic-ok').classList.add('hidden');
+};
+$('btn-mic-ok').onclick = () => {
+  $('mic-play').pause();
+  $('prog').innerHTML = QUESTIONS.map(()=>'<div class="dot"></div>').join('');
+  show('scr-quiz');
+  askQuestion(0);
+};
+
+function askQuestion(i){
+  idx = i;
+  [...$('prog').children].forEach((d,j)=>{d.className='dot'+(j<i?' done':j===i?' active':'');});
+  $('qnum').textContent = `Вопрос ${i+1} из ${QUESTIONS.length}`;
+  $('orb').className='orb speaking'; $('orb').textContent='📞';
+  $('state').textContent='Клиент задаёт вопрос…';
+  $('hint').textContent='Слушайте внимательно';
+  $('timer').classList.add('hidden');
+  $('btn-finish').classList.add('hidden');
+  playQuestion(i, startRecording);
+}
+
+function startRecording(){
+  const mime = pickMime();
+  chunks=[];
+  try{
+    recorder = mime ? new MediaRecorder(stream,{mimeType:mime}) : new MediaRecorder(stream);
+  }catch(err){
+    $('quiz-err').textContent='Не удалось начать запись: '+err.message;
+    $('quiz-err').classList.remove('hidden'); return;
+  }
+  recorder.ondataavailable = ev => { if(ev.data.size) chunks.push(ev.data); };
+  recorder.onstop = () => {
+    const mimeType = recorder.mimeType || 'audio/webm';
+    answers[idx] = { blob:new Blob(chunks,{type:mimeType}), mime:mimeType,
+                     seconds:Math.round((Date.now()-recStart)/1000) };
+    if(idx+1 < QUESTIONS.length) setTimeout(()=>askQuestion(idx+1), 900);
+    else uploadAll();
+  };
+  recorder.start();
+  recStart = Date.now();
+  $('orb').className='orb rec'; $('orb').textContent='🎙';
+  $('state').textContent='Идёт запись вашего ответа';
+  $('hint').textContent='Отвечайте вслух. Закончили — нажмите кнопку ниже.';
+  $('timer').textContent='00:00'; $('timer').classList.remove('hidden');
+  clearInterval(timerInt);
+  timerInt = setInterval(()=>{ $('timer').textContent=fmt(Math.round((Date.now()-recStart)/1000)); },500);
+  // guard: don't allow finishing instantly by accident
+  $('btn-finish').disabled = true;
+  setTimeout(()=>{ $('btn-finish').disabled=false; }, 1500);
+  $('btn-finish').classList.remove('hidden');
+}
+
+$('btn-finish').onclick = () => {
+  if(!recorder || recorder.state!=='recording') return;
+  clearInterval(timerInt);
+  $('btn-finish').classList.add('hidden');
+  $('state').textContent='Ответ записан';
+  recorder.stop();
+};
+
+/* ---------- upload ---------- */
+async function uploadAll(){
+  show('scr-upload');
+  if(stream) stream.getTracks().forEach(t=>t.stop());
+  const folder = new Date().toISOString().slice(0,16).replace(/[:T]/g,'-') + '_' + translit(candName);
+  const meta = [];
+  try{
+    for(let i=0;i<answers.length;i++){
+      $('upl-status').textContent = `Отправка ответа ${i+1} из ${answers.length}…`;
+      const a = answers[i];
+      const path = `${folder}/q${i+1}.${extFor(a.mime)}`;
+      const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,{
+        method:'POST',
+        headers:{ 'Authorization':`Bearer ${SUPABASE_KEY}`, 'apikey':SUPABASE_KEY, 'Content-Type':a.mime },
+        body:a.blob
+      });
+      if(!res.ok) throw new Error(`q${i+1}: HTTP ${res.status} — ${(await res.text()).slice(0,200)}`);
+      meta.push({question:i+1, kind:QUESTIONS[i].kind, path, seconds:a.seconds});
+    }
+    $('upl-status').textContent='Сохраняем анкету…';
+    const row = await fetch(`${SUPABASE_URL}/rest/v1/asentor_interviews`,{
+      method:'POST',
+      headers:{ 'Authorization':`Bearer ${SUPABASE_KEY}`, 'apikey':SUPABASE_KEY,
+                'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      body:JSON.stringify({ name:candName, folder, answers:meta,
+                            user_agent:navigator.userAgent.slice(0,250) })
+    });
+    if(!row.ok) throw new Error(`анкета: HTTP ${row.status} — ${(await row.text()).slice(0,200)}`);
+    show('scr-done');
+  }catch(err){
+    $('upl-err').innerHTML = 'Не удалось отправить ответы: '+err.message+
+      '<br><br>Проверьте интернет и <b>не закрывайте страницу</b> — нажмите кнопку ниже, чтобы повторить.';
+    $('upl-err').classList.remove('hidden');
+    if(!$('btn-retry')){
+      const b=document.createElement('button');
+      b.id='btn-retry'; b.className='btn btn-blue'; b.style.marginTop='14px';
+      b.textContent='Повторить отправку';
+      b.onclick=()=>{ $('upl-err').classList.add('hidden'); b.remove(); uploadAll(); };
+      $('scr-upload').appendChild(b);
+    }
+  }
+}
+
+/* ---------- admin mode ---------- */
+if(new URLSearchParams(location.search).has('admin')){
+  show('scr-admin');
+  const list=$('admin-list');
+  QUESTIONS.forEach((q,i)=>{
+    const d=document.createElement('div'); d.className='admin-q';
+    d.innerHTML=`<span class="tag ${q.kind==='core'?'core':'trap'}">${q.kind==='core'?'по материалам':q.kind==='trap-irrelevant'?'ловушка: не по теме':'ловушка: нет данных'}</span>
+      <div class="qt"><b>Вопрос ${q.id}.</b> ${q.text}</div>
+      <div class="row">
+        <button data-rec>🔴 Записать</button>
+        <button data-play disabled>▶ Прослушать</button>
+        <a data-dl class="dl" style="display:none" download="q${q.id}.webm">⬇ Скачать q${q.id}</a>
+      </div>`;
+    list.appendChild(d);
+    let rec=null, aBlob=null, aUrl=null;
+    const bRec=d.querySelector('[data-rec]'), bPlay=d.querySelector('[data-play]'), bDl=d.querySelector('[data-dl]');
+    bRec.onclick=async()=>{
+      if(rec && rec.state==='recording'){ rec.stop(); return; }
+      const st=await navigator.mediaDevices.getUserMedia({audio:true});
+      const mime=pickMime(); const ch=[];
+      rec=mime?new MediaRecorder(st,{mimeType:mime}):new MediaRecorder(st);
+      rec.ondataavailable=e=>{if(e.data.size)ch.push(e.data);};
+      rec.onstop=()=>{
+        st.getTracks().forEach(t=>t.stop());
+        aBlob=new Blob(ch,{type:rec.mimeType||'audio/webm'});
+        if(aUrl)URL.revokeObjectURL(aUrl);
+        aUrl=URL.createObjectURL(aBlob);
+        bPlay.disabled=false;
+        bDl.href=aUrl; bDl.download=`q${q.id}.${extFor(rec.mimeType||'audio/webm')}`;
+        bDl.style.display='block';
+        bRec.textContent='🔴 Перезаписать'; bRec.classList.remove('recing');
+      };
+      rec.start(); bRec.textContent='⏹ Стоп'; bRec.classList.add('recing');
+    };
+    bPlay.onclick=()=>{ new Audio(aUrl).play(); };
+  });
+}
+</script>
+</body>
+</html>
