@@ -113,6 +113,8 @@ footer{margin-top:auto;padding-top:26px;font-size:13px;color:var(--gray);text-al
       <div class="hint" id="hint">Слушайте внимательно</div>
       <div class="timer hidden" id="timer">00:00</div>
       <button class="btn btn-green hidden" id="btn-finish">⏸ Завершить ответ</button>
+      <button class="btn btn-blue hidden" id="btn-play-gate">▶ Нажмите, чтобы услышать вопрос</button>
+      <button class="btn btn-blue hidden" id="btn-rerecord">🎙 Ответить на этот вопрос заново</button>
     </div>
     <div class="err hidden" id="quiz-err"></div>
   </div>
@@ -183,18 +185,37 @@ function translit(s){const map={а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e'
   return s.toLowerCase().split('').map(c=>map[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'candidate';}
 
 /* ---------- question playback (recorded voice, TTS fallback) ---------- */
+let playGateFn=null;
 function playQuestion(i, onEnd){
   const q = QUESTIONS[i];
-  let e = 0;
+  let e = 0, finished = false;
+  const done = () => { if(finished) return; finished = true; onEnd(); };
   const tryNext = () => {
-    if (e >= AUDIO_EXTS.length) { speakTTS(q.text, onEnd); return; }
+    if(finished) return;
+    if (e >= AUDIO_EXTS.length) { speakTTS(q.text, done); return; }
     const a = new Audio(`${AUDIO_DIR}/q${q.id}.${AUDIO_EXTS[e++]}`);
-    a.onended = onEnd;
-    a.onerror = tryNext;
-    a.play().catch(tryNext);
+    a.onended = done;
+    // сбой в середине воспроизведения — не перечитываем вопрос заново
+    a.onerror = () => { if(a.currentTime > 0) done(); else tryNext(); };
+    const p = a.play();
+    if(p && p.catch) p.catch(err => {
+      if(err && err.name === 'NotAllowedError'){
+        // браузер блокирует звук без клика (Safari) — просим нажать кнопку
+        $('state').textContent='Готовы услышать вопрос?';
+        $('hint').textContent='Ваш браузер требует нажатия, чтобы включить звук';
+        playGateFn = () => { a.play().catch(()=>tryNext()); };
+        $('btn-play-gate').classList.remove('hidden');
+      } else if(!finished) tryNext();
+    });
   };
   tryNext();
 }
+$('btn-play-gate').onclick = () => {
+  $('btn-play-gate').classList.add('hidden');
+  $('state').textContent='Клиент задаёт вопрос…';
+  $('hint').textContent='Слушайте внимательно';
+  if(playGateFn){ const f=playGateFn; playGateFn=null; f(); }
+};
 function speakTTS(text, onEnd){
   if(!('speechSynthesis' in window)){ onEnd(); return; }
   speechSynthesis.cancel();
@@ -267,12 +288,30 @@ function askQuestion(i){
   $('hint').textContent='Слушайте внимательно';
   $('timer').classList.add('hidden');
   $('btn-finish').classList.add('hidden');
+  $('btn-play-gate').classList.add('hidden');
+  $('btn-rerecord').classList.add('hidden');
   playQuestion(i, startRecording);
 }
 
-function startRecording(){
+let finishRequested=false;
+function showRecProblem(msg){
+  clearInterval(timerInt);
+  $('orb').className='orb speaking'; $('orb').textContent='⚠️';
+  $('state').textContent='Проблема с записью';
+  $('hint').textContent=msg+' Нажмите кнопку — вы ответите на этот вопрос заново.';
+  $('timer').classList.add('hidden');
+  $('btn-finish').classList.add('hidden');
+  $('btn-rerecord').classList.remove('hidden');
+}
+async function startRecording(){
+  if(recorder && recorder.state==='recording') return;
+  // микрофон мог отключиться, пока играл вопрос — переподключаем
+  if(!stream || !stream.getTracks().some(t=>t.readyState==='live')){
+    try{ stream = await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(err){ showRecProblem('Микрофон недоступен — проверьте, что он подключён.'); return; }
+  }
   const mime = pickMime();
-  chunks=[];
+  chunks=[]; finishRequested=false;
   try{
     recorder = mime ? new MediaRecorder(stream,{mimeType:mime}) : new MediaRecorder(stream);
   }catch(err){
@@ -280,7 +319,13 @@ function startRecording(){
     $('quiz-err').classList.remove('hidden'); return;
   }
   recorder.ondataavailable = ev => { if(ev.data.size) chunks.push(ev.data); };
+  recorder.onerror = () => showRecProblem('Запись прервалась из-за ошибки микрофона.');
   recorder.onstop = () => {
+    if(!finishRequested){
+      // запись оборвалась сама (Bluetooth-гарнитура, другое приложение заняло микрофон)
+      showRecProblem('Запись прервалась — похоже, микрофон отключился.');
+      return;
+    }
     const mimeType = recorder.mimeType || 'audio/webm';
     answers[idx] = { blob:new Blob(chunks,{type:mimeType}), mime:mimeType,
                      seconds:Math.round((Date.now()-recStart)/1000) };
@@ -306,7 +351,13 @@ $('btn-finish').onclick = () => {
   clearInterval(timerInt);
   $('btn-finish').classList.add('hidden');
   $('state').textContent='Ответ записан';
+  finishRequested = true;
   recorder.stop();
+};
+$('btn-rerecord').onclick = () => {
+  $('btn-rerecord').classList.add('hidden');
+  $('orb').className='orb rec'; $('orb').textContent='🎙';
+  startRecording();
 };
 
 /* ---------- upload ---------- */
